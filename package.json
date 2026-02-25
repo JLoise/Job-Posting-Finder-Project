@@ -1,0 +1,10 @@
+{
+  "name": "loyseconnect",
+  "private": true,
+  "description": "LoyseConnect – job posting and finder (MERN)",
+  "scripts": {
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev",
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install"
+  }
+}
