@@ -81,3 +81,5 @@ This creates a seed user (`seed@loyseconnect.example.com` / `seedpassword123`) a
 - **Backend**: Node.js, Express, MongoDB (Mongoose), JWT, bcryptjs
 - **Frontend**: React 18, React Router, Vite
 - **Search**: MongoDB regex (case-insensitive) on title, company, description, and location
+# Job-Posting-Finder-Project
+# Job-Posting-Finder-Project
