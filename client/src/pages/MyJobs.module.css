@@ -68,9 +68,6 @@
 }
 
 .editBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
   padding: 0.4rem 0.75rem;
   background: var(--surface);
   color: var(--text);
@@ -90,9 +87,6 @@
 }
 
 .deleteBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
   padding: 0.4rem 0.75rem;
   background: #dc2626;
   color: white;
@@ -139,7 +133,6 @@
   font-size: 1rem;
   width: 20px;
   text-align: center;
-  font-weight: normal;
 }
 
 .salary {
@@ -176,9 +169,6 @@
 }
 
 .shareBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
   padding: 0.75rem 1.5rem;
   background: var(--surface);
   color: var(--text);
@@ -194,10 +184,6 @@
 .shareBtn:hover {
   border-color: var(--accent);
   color: var(--accent);
-}
-
-.shareIcon {
-  font-size: 1rem;
 }
 
 .jobDescription {
