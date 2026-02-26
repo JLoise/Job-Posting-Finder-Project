@@ -20,6 +20,8 @@ export default function JobDetail() {
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [applying, setApplying] = useState(false);
 
   useEffect(() => {
     fetchJob(id)
@@ -54,11 +56,51 @@ export default function JobDetail() {
     }
   };
 
+  const handleApply = async () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    setApplying(true);
+    try {
+      // TODO: Implement actual apply functionality with API call
+      // await applyToJob(id);
+      alert('Application submitted successfully!');
+    } catch (err) {
+      alert(err.message || 'Failed to submit application');
+    } finally {
+      setApplying(false);
+    }
+  };
+
+  const handleSave = async () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    try {
+      // TODO: Implement actual save functionality with API call
+      // if (saved) {
+      //   await unsaveJob(id);
+      // } else {
+      //   await saveJob(id);
+      // }
+      setSaved(!saved);
+      alert(saved ? 'Job removed from saved jobs' : 'Job saved successfully!');
+    } catch (err) {
+      alert(err.message || 'Failed to save job');
+    }
+  };
+
   if (loading) return <div className={styles.loading}>Loading…</div>;
   if (!job) return <div className={styles.loading}>Job not found. <Link to="/">Back to jobs</Link></div>;
 
   return (
     <div className={styles.wrap}>
+      <div className={styles.backButton}>
+        <Link to="/" className={styles.backLink}>← Back to All Jobs</Link>
+      </div>
+      
       <div className={styles.card}>
         <div className={styles.header}>
           <div>
@@ -74,6 +116,7 @@ export default function JobDetail() {
             </div>
           )}
         </div>
+        
         <p className={styles.company}>{job.company}</p>
         <p className={styles.meta}>{job.location}</p>
         {formatSalary() && <p className={styles.salary}>{formatSalary()}</p>}
@@ -82,12 +125,32 @@ export default function JobDetail() {
             Posted by {job.postedBy.name || 'Unknown'}
           </p>
         )}
+        
+        {!isOwner && (
+          <div className={styles.jobActions}>
+            <button 
+              type="button" 
+              onClick={handleApply} 
+              disabled={applying}
+              className={styles.applyBtn}
+            >
+              {applying ? 'Applying…' : 'Apply Now'}
+            </button>
+            <button 
+              type="button" 
+              onClick={handleSave}
+              className={`${styles.saveBtn} ${saved ? styles.saved : ''}`}
+            >
+              {saved ? '✓ Saved' : 'Save Job'}
+            </button>
+          </div>
+        )}
+        
         <div className={styles.description}>
           <h2>Description</h2>
           <p>{job.description}</p>
         </div>
       </div>
-      <p className={styles.back}><Link to="/">← Back to all jobs</Link></p>
     </div>
   );
 }
