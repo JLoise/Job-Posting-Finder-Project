@@ -27,7 +27,7 @@ npm install
 npm run dev
 ```
 
-API runs at `http://localhost:5000`.
+API runs at `http://localhost:5001`.
 
 ### 2. Frontend
 
@@ -37,13 +37,13 @@ npm install
 npm run dev
 ```
 
-App runs at `http://localhost:3000` and proxies `/api` to the backend.
+App runs at `http://localhost:3001` and proxies `/api` to the backend.
 
 ### 3. Environment (server)
 
 Create `server/.env` with:
 
-- `PORT=5000`
+- `PORT=5001`
 - `MONGODB_URI=mongodb://localhost:27017/loyseconnect` (or your Atlas URI)
 - `JWT_SECRET=<a-long-random-secret>`
 - **Optional (Google sign-in):** `GOOGLE_CLIENT_ID=<your-google-client-id>.apps.googleusercontent.com` — get it from [Google Cloud Console → APIs & Services → Credentials](https://console.cloud.google.com/apis/credentials). Create an OAuth 2.0 Client ID (Web application), add `http://localhost:3000` to authorized JavaScript origins.
