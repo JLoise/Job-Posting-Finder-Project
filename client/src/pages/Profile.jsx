@@ -129,7 +129,7 @@ export default function Profile() {
                   onError={(e) => { e.target.onerror = null; e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(profile?.name || 'User')}&size=168`; }}
                 />
                 <button type="button" className={styles.editPhotoBtn} onClick={() => { setEditPhoto(profile?.profilePicture || ''); setEditing('photo'); }} aria-label="Change photo">
-                  Edit photo
+                  Upload photo
                 </button>
               </>
             )}
