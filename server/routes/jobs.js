@@ -134,4 +134,40 @@ router.delete('/:id', protect, async (req, res) => {
   }
 });
 
+// POST /api/jobs/:id/save — save job (protected)
+router.post('/:id/save', protect, async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+    if (!job) return res.status(404).json({ message: 'Job not found' });
+    
+    const User = await import('../models/User.js').then(m => m.default);
+    const user = await User.findById(req.user._id);
+    
+    if (!user.savedJobs.includes(req.params.id)) {
+      user.savedJobs.push(req.params.id);
+      await user.save();
+    }
+    res.json({ message: 'Job saved', savedJobs: user.savedJobs });
+  } catch (err) {
+    res.status(500).json({ message: err.message || 'Failed to save job' });
+  }
+});
+
+// DELETE /api/jobs/:id/save — unsave job (protected)
+router.delete('/:id/save', protect, async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+    if (!job) return res.status(404).json({ message: 'Job not found' });
+    
+    const User = await import('../models/User.js').then(m => m.default);
+    const user = await User.findById(req.user._id);
+    
+    user.savedJobs = user.savedJobs.filter(id => id.toString() !== req.params.id);
+    await user.save();
+    res.json({ message: 'Job unsaved', savedJobs: user.savedJobs });
+  } catch (err) {
+    res.status(500).json({ message: err.message || 'Failed to unsave job' });
+  }
+});
+
 export default router;

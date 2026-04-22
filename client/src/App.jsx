@@ -8,6 +8,7 @@ import PostJob from './pages/PostJob';
 import JobDetail from './pages/JobDetail';
 import MyJobs from './pages/MyJobs';
 import Profile from './pages/Profile';
+import SavedJobs from './pages/SavedJobs';
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="post/:id" element={<PostJob />} />
         <Route path="jobs/:id" element={<JobDetail />} />
         <Route path="my-jobs" element={<MyJobs />} />
+        <Route path="saved-jobs" element={<SavedJobs />} />
         <Route path="profile" element={<Profile />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

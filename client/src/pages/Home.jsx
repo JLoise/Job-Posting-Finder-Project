@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchJobs } from '../api';
+import { fetchJobs, saveJob, unsaveJob, fetchSavedJobs } from '../api';
 import styles from './Home.module.css';
 
 export default function Home() {
@@ -10,6 +10,10 @@ export default function Home() {
   const [location, setLocation] = useState('');
   const [type, setType] = useState('');   
   const [sort, setSort] = useState('recent');
+  const [savedJobs, setSavedJobs] = useState(new Set());
+  const [savingJobId, setSavingJobId] = useState(null);
+
+  const token = localStorage.getItem('loyseconnect_token');
 
   const load = async () => {
     setLoading(true);
@@ -32,9 +36,47 @@ export default function Home() {
     load();
   }, [sort, type]);
 
+  useEffect(() => {
+    if (token) {
+      fetchSavedJobs()
+        .then(data => {
+          const savedIds = new Set((data || []).map(job => job._id));
+          setSavedJobs(savedIds);
+        })
+        .catch(() => setSavedJobs(new Set()));
+    }
+  }, [token]);
+
   const handleSearch = (e) => {
     e.preventDefault();
     load();
+  };
+
+  const handleSaveJob = async (e, jobId) => {
+    e.preventDefault();
+    if (!token) {
+      alert('Please log in to save jobs');
+      return;
+    }
+
+    setSavingJobId(jobId);
+    try {
+      if (savedJobs.has(jobId)) {
+        await unsaveJob(jobId);
+        setSavedJobs(prev => {
+          const updated = new Set(prev);
+          updated.delete(jobId);
+          return updated;
+        });
+      } else {
+        await saveJob(jobId);
+        setSavedJobs(prev => new Set(prev).add(jobId));
+      }
+    } catch (err) {
+      alert(err.message || 'Failed to update saved jobs');
+    } finally {
+      setSavingJobId(null);
+    }
   };
 
   const formatSalary = (job) => {
@@ -124,7 +166,17 @@ export default function Home() {
               {formatSalary(job) && <p className={styles.salary}>{formatSalary(job)}</p>}
               <p className={styles.time}>Posted {timeAgo(job.createdAt)}</p>
               <p className={styles.desc}>{job.description?.slice(0, 120)}{job.description?.length > 120 ? '…' : ''}</p>
-              <Link to={`/jobs/${job._id}`} className={styles.viewBtn}>View Details</Link>
+              <div className={styles.buttonGroup}>
+                <Link to={`/jobs/${job._id}`} className={styles.viewBtn}>View Details</Link>
+                <button 
+                  onClick={(e) => handleSaveJob(e, job._id)}
+                  disabled={savingJobId === job._id}
+                  className={`${styles.saveBtn} ${savedJobs.has(job._id) ? styles.saved : ''}`}
+                  title={savedJobs.has(job._id) ? 'Unsave job' : 'Save job'}
+                >
+                  {savingJobId === job._id ? '...' : savedJobs.has(job._id) ? '♥' : '♡'}
+                </button>
+              </div>
             </article>
           ))}
         </div>

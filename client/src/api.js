@@ -112,3 +112,26 @@ export async function updateProfile(body) {
   });
   return handleRes(res, 'Failed to update profile');
 }
+
+export async function saveJob(jobId) {
+  const res = await fetch(`${BASE}/jobs/${jobId}/save`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+  });
+  return handleRes(res, 'Failed to save job');
+}
+
+export async function unsaveJob(jobId) {
+  const res = await fetch(`${BASE}/jobs/${jobId}/save`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(),
+  });
+  return handleRes(res, 'Failed to unsave job');
+}
+
+export async function fetchSavedJobs() {
+  const res = await fetch(`${BASE}/users/saved-jobs`, {
+    headers: getAuthHeaders(),
+  });
+  return handleRes(res, 'Failed to fetch saved jobs');
+}

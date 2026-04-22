@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema(
     experience: [experienceSchema],
     education: [educationSchema],
     skills: [{ type: String, trim: true }],
+    savedJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Job' }],
   },
   { timestamps: true }
 );

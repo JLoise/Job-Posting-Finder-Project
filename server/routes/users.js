@@ -46,4 +46,17 @@ router.put('/me', protect, async (req, res) => {
   }
 });
 
+router.get('/saved-jobs', protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).populate({
+      path: 'savedJobs',
+      populate: { path: 'postedBy', select: 'name email' }
+    });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    return res.json(user.savedJobs || []);
+  } catch (err) {
+    return res.status(500).json({ message: err.message || 'Failed to fetch saved jobs' });
+  }
+});
+
 export default router;

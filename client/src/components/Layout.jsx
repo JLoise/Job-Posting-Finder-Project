@@ -24,6 +24,7 @@ export default function Layout() {
             <>
               <Link to="/profile" className={styles.navLink}>Profile</Link>
               <Link to="/my-jobs" className={styles.navLink}>My Jobs</Link>
+              <Link to="/saved-jobs" className={styles.navLink}>Saved Jobs</Link>
               <Link to="/post" className={styles.btnPost}>Post a Job</Link>
               <span className={styles.userName}>{user.name}</span>
               <button type="button" onClick={handleLogout} className={styles.btnSignIn}>Sign Out</button>
